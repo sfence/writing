@@ -1,8 +1,9 @@
 
-local S = writable.translator
+local S = writing.translator
 
 
-minetest.register_craftitem("writable:soot", {
+minetest.register_craftitem("writing:soot", {
     description = S("Soot"),
+    inventory_image = "writing_soot.png",
   })
 

@@ -9,7 +9,7 @@ minetest.register_craftitem("writing:oak_gall_ink_bottle", {
 -- oak gall ink recipe
 
 
--- honey, egg, coali/soot link recipes
+-- honey, egg, coal/soot link recipes
 
 minetest.register_craftitem("writing:soot_ink_bottle", {
     description = S("Bottle of Soot Ink"),

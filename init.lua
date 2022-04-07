@@ -20,3 +20,8 @@ dofile(modpath.."/pen.lua")
 
 dofile(modpath.."/paper.lua")
 dofile(modpath.."/book.lua")
+
+dofile(modpath.."/integration.lua")
+
+dofile(modpath.."/craftitems.lua")
+dofile(modpath.."/crafting.lua")
