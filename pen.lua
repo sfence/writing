@@ -12,6 +12,7 @@ if writing.textures.feather then
         cost_per_remove = 0,
         cost_per_change = 20,
         materials = {paper = 1, wood = 1},
+        break_stack = writing.items.glass_bottle,
       },
       
       on_use = writing.on_use_write_tool,
@@ -26,6 +27,7 @@ if writing.textures.feather then
         cost_per_remove = 0,
         cost_per_change = 60,
         materials = {paper = 1, wood = 1},
+        break_stack = writing.items.glass_bottle,
       },
       
       on_use = writing.on_use_write_tool,

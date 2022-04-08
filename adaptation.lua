@@ -6,13 +6,16 @@ local items = writing.items
 local textures = writing.textures
 
 items.feathers = {}
+items.oils = {}
 
 items.glass_bottle = "vessels:glass_bottle"
+items.drinking_glass = "vessels:drinking_glass"
 items.water_bottle = "bucket:bucket_water"
 items.empty_bottle = "bucket:bucket_empty"
 
 items.egg = "--unknown--"
 items.honey = "--unknown--"
+items.glue = "mesecons_materials:glue"
 
 if minetest.get_modpath("animalia") then
   table.insert(items.feathers, "animalia:feather")
@@ -32,12 +35,25 @@ end
 if minetest.registered_items["farming:glass_water"] then
   items.glass_bottle = "vessels:glass_bottle"
   items.water_bottle = "farming:glass_water"
-  items.empty_bottle = "vessels:glass_bottle"
+  items.empty_bottle = "vessels:drinking_glass"
+  table.insert(items.oils, "farming:hemp_oil")
+  table.insert(items.oils, "farming:sunflower_oil")
+end
+
+if minetest.get_modpath("hades_food") then
+  table.insert(items.oils, "hades_food:bottle_olive_oil")
+end
+
+if minetest.get_modpath("hades_bucket") then
+  items.water_bottle = "hades_bucket:bucket_water"
+  items.empty_bottle = "hades_bucket:bucket_empty"
 end
 
 if minetest.registered_items["hades_extrafarming:glass_water"] then
   items.glass_bottle = "vessels:glass_bottle"
   items.water_bottle = "hades_extrafarming:glass_water"
-  items.empty_bottle = "vessels:glass_bottle"
+  items.empty_bottle = "vessels:drinking_glass"
+  table.insert(items.oils, "hades_extrafarming:hemp_oil")
+  table.insert(items.oils, "hades_extrafarming:sunflower_oil")
 end
 

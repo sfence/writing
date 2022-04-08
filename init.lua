@@ -17,6 +17,8 @@ dofile(modpath.."/functions.lua")
 dofile(modpath.."/adaptation.lua")
 
 dofile(modpath.."/ink.lua")
+dofile(modpath.."/glue.lua")
+
 dofile(modpath.."/pencil.lua")
 dofile(modpath.."/pen.lua")
 

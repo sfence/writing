@@ -27,36 +27,20 @@ local paper_get_writing_formspec = function(itemstack, user)
     .. "button[3.5,11.75;1,0.8;write;Write]"
 end
 local paper_writing_receive_fields = function(itemstack, under, field)
-  if field.write then
+  if field.write and writing.toolIsUsable(itemstack, under) then
     local def = itemstack:get_definition()
+    local under_def = under:get_definition()
     local meta = under:get_meta()
     local old_text = meta:get_string("paper_text")
-    local doAdd = false
-    local doRemove = false
-    if def._writing_tool._cost_per_add>0 then
-      doAdd = true
-    end
-    if def._writing_tool._cost_per_remove>0 then
-      doRemove = true
-      --minetest.log("warning","Enable remove: "..dump(def._writing_tool))
-    end
-    local doChange = doAdd and doRemove
-    local new_text = writing.smartTextUpdate(old_text, field.paper_text, doAdd, doRemove, doChange)
-    --minetest.log("warning","Smart update: "..dump(new_text))
-    meta:set_string("paper_text", new_text.out_text)
-    if new_text.added>0 then
-      itemstack:add_wear(def._writing_tool._cost_per_add*new_text.added)
-    end
-    if new_text.removed>0 then
-      itemstack:add_wear(def._writing_tool._cost_per_remove*new_text.removed)
-    end
     
-    local under_def = under:get_definition()
-    under:add_wear(under_def._writable._wear_per_write)
+    --minetest.log("warning","pretrim: "..dump(field.paper_text))
+    field.paper_text = writing.trimText(field.paper_text, under_def._writable.max_lines, under_def._writable.max_line_chars)
+    --minetest.log("warning","preupdate: "..dump(field.paper_text))
+    local new_text = writing.toolTextUpdate(itemstack, old_text, field.paper_text)
+    --minetest.log("warning","tool update: "..dump(new_text))
+    meta:set_string("paper_text", new_text)
     
-    if (itemstack:get_count()==0) and def._writing_tool.break_stack then
-      itemstack:replace(def._writing_tool.break_stack)
-    end
+    under:add_wear(under_def._writable.wear_per_write)
   end
 end
 minetest.register_tool("writing:paper_written", {
@@ -71,6 +55,8 @@ minetest.register_tool("writing:paper_written", {
       writing_receive_fields = paper_writing_receive_fields,
       wear_per_read = 100,
       wear_per_write = 200,
+      max_lines = 36,
+      max_line_chars = 39,
     },
   })
 

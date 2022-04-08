@@ -87,66 +87,31 @@ local book_writing_receive_fields = function(itemstack, under, field)
     end
     return
   end
-  if field.write then
+  if field.write and writing.toolIsUsable(itemstack, under) then
     local def = itemstack:get_definition()
+    local under_def = under:get_definition()
     local meta = under:get_meta()
     local lpage_text = "page_"..meta:get_int("page")
     local rpage_text = "page_"..(meta:get_int("page")+1)
     
     -- left page
     local old_text = meta:get_string(lpage_text)
-    local doAdd = false
-    local doRemove = false
-    if def._writing_tool._cost_per_add>0 then
-      doAdd = true
-    end
-    if def._writing_tool._cost_per_remove>0 then
-      doRemove = true
-      --minetest.log("warning","Enable remove: "..dump(def._writing_tool))
-    end
-    local doChange = doAdd and doRemove
-    local new_text = writing.smartTextUpdate(old_text, field[lpage_text], doAdd, doRemove, doChange)
+    field[lpage_text] = writing.trimText(field[lpage_text], under_def._writable.max_lines, under_def._writable.max_line_chars)
+    local new_text = writing.toolTextUpdate(itemstack, old_text, field[lpage_text])
     --minetest.log("warning","Smart update: "..dump(new_text))
-    meta:set_string(lpage_text, new_text.out_text)
-    if new_text.added>0 then
-      itemstack:add_wear(def._writing_tool.cost_per_add*new_text.added)
-    end
-    if new_text.removed>0 then
-      itemstack:add_wear(def._writing_tool.cost_per_remove*new_text.removed)
-    end
+    meta:set_string(lpage_text, new_text)
     
-    local under_def = under:get_definition()
-    under:add_wear(under_def._wear_per_write)
+    under:add_wear(under_def._writable.wear_per_write)
     
     -- right page
-    if (under:get_count()>0) and (itemstack:get_count()>0) then
+    if writing.toolIsUsable(itemstack, under) then
       local old_text = meta:get_string(rpage_text)
-      local doAdd = false
-      local doRemove = false
-      if def._writing_tool.cost_per_add>0 then
-        doAdd = true
-      end
-      if def._writing_tool.cost_per_remove>0 then
-        doRemove = true
-        --minetest.log("warning","Enable remove: "..dump(def._writing_tool))
-      end
-      local doChange = doAdd and doRemove
-      local new_text = writing.smartTextUpdate(old_text, field[rpage_text], doAdd, doRemove, doChange)
+      field[rpage_text] = writing.trimText(field[rpage_text], under_def._writable.max_lines, under_def._writable.max_line_chars)
+      local new_text = writing.toolTextUpdate(itemstack, old_text, field[rpage_text])
       --minetest.log("warning","Smart update: "..dump(new_text))
-      meta:set_string(rpage_text, new_text.out_text)
-      if new_text.added>0 then
-        itemstack:add_wear(def._writing_tool._cost_per_add*new_text.added)
-      end
-      if new_text.removed>0 then
-        itemstack:add_wear(def._writing_tool._cost_per_remove*new_text.removed)
-      end
+      meta:set_string(rpage_text, new_text)
       
-      local under_def = under:get_definition()
       under:add_wear(under_def._writable.wear_per_write)
-    end
-    
-    if (itemstack:get_count()==0) and def._writing_tool.break_stack then
-      itemstack:replace(def._writing_tool.break_stack)
     end
   end
 end
@@ -163,5 +128,7 @@ minetest.register_tool("writing:book_written", {
       writing_receive_fields = book_writing_receive_fields,
       wear_per_read = 2,
       wear_per_write = 50,
+      max_lines = 36,
+      max_line_chars = 39,
     }
   })

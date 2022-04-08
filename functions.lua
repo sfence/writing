@@ -37,6 +37,34 @@ minetest.register_on_player_receive_fields(function(player, formname, field)
 end)
 
 local emptyChars = {[" "]=true, ["\n"]=true}
+local endLineChars = {["\n"]=true}
+
+function writing.trimText(text, max_lines, max_line_chars)
+  local lenUse = string.len(text)
+  local out_text = ""
+  local line_chars = 0
+  local lines = 0
+  
+  for i = 0, lenUse do
+    local ch = text:sub(i, i)
+    if endLineChars[ch] then
+      line_chars = 0
+      lines = lines + 1
+      if lines >= max_lines then
+        return out_text
+      end
+      out_text = out_text..ch
+    else
+      if line_chars<max_line_chars then
+        out_text = out_text..ch
+      end
+      line_chars = line_chars + 1
+    end
+  end
+  
+  return out_text
+end
+
 
 writing.change_char = nil
 
@@ -53,7 +81,6 @@ if writing.settings.change_char~="" then
   end
 end
 
-
 function writing.smartTextUpdate(textA, textB, doAdd, doRemove, doChange)
   local added = 0
   local removed = 0
@@ -61,69 +88,99 @@ function writing.smartTextUpdate(textA, textB, doAdd, doRemove, doChange)
   local out_text = ""
   local lenA = string.len(textA)
   local lenB = string.len(textB)
-  local lenUse = lenA
-  if lenA > lenB then
-    lenUse = lenB
-  end
-  for ia = 0, lenUse do
+  local ia = 0
+  local ib = 0
+  while (ia<lenA) and (ib<lenB) do
+    ia = ia + 1
+    ib = ib + 1
     local a = textA:sub(ia, ia)
-    local b = textB:sub(ia, ia)
+    local b = textB:sub(ib, ib)
     if a==b then
       out_text = out_text..a
     else
-      if doChange or doRemove then
-        if a==" " then
-          if doChange then
+      if endLineChars[a] then
+        if doAdd then
+          out_text = out_text..b
+          if endLineChars[b] then
+            added = added + 1
+          end
+        end
+        while (ib<lenB) do
+          ib = ib + 1
+          b = textB:sub(ib, ib)
+          if doAdd then
             out_text = out_text..b
-            changed = changed + 1
+            if endLineChars[b] then
+              added = added + 1
+            end
+          end
+          if endLineChars[b] then
+            break
+          end
+        end
+      elseif endLineChars[b] then
+        if doRemove then
+          out_text = out_text..b
+          if not emptyChars[a] then
+            removed = removed + 1
+          end
+        else
+          out_text = out_text..a
+        end
+        while (ia<lenA) do
+          ia = ia + 1
+          a = textA:sub(ia, ia)
+          if doRemove then
+            if not emptyChars[a] then
+              removed = removed + 1
+            end
           else
             out_text = out_text..a
           end
-        else
-          if doRemove and doChange then
-            out_text = out_text..b
-            removed = removed + 1
-            changed = changed + 1
-          elseif doRemove then
-            out_text = out_text.." "
-            removed = removed + 1
-          else--if doChange then
-            if writing.change_char then
-              --out_text = out_text..utf8.char(0x338)..a
-              -- may be \U334 or \U335 or \U336 or \U337 or \U338
-              --out_text = out_text .. utf8.char(0x25AE) -- black rectange
-              --out_text = out_text .. utf8.char(0x2573) -- cross
-              out_text = out_text..(writing.change_char(a))
-              changed = changed + 1
-            else
-              out_text = out_text..a
-            end
+          if endLineChars[a] then
+            break
           end
         end
+      elseif emptyChars[a] then
+        if doAdd then
+          out_text = out_text..b
+          added = added + 1
+        else
+          out_text = out_text..a
+        end
       else
-        out_text = out_text..a
+        if doChange and writing.change_char then
+          --out_text = out_text..utf8.char(0x338)..a
+          -- may be \U334 or \U335 or \U336 or \U337 or \U338
+          --out_text = out_text .. utf8.char(0x25AE) -- black rectange
+          --out_text = out_text .. utf8.char(0x2573) -- cross
+          out_text = out_text..(writing.change_char(a))
+          changed = changed + 1
+        else
+          out_text = out_text..a
+        end
       end
     end
   end
-  if (lenB > lenA) and doAdd then
-    for ia = lenA+1, lenB do
-      local b = textB:sub(ia, ia)
+  while ib < lenB do
+    ib = ib + 1
+    local b = textB:sub(ib, ib)
+    if doAdd then
       if not emptyChars[b] then
         added = added + 1
       end
       out_text = out_text..b
     end
   end
-  if (lenA > lenB) then
-    for ia = lenB+1, lenA do
-      local a = textA:sub(ia, ia)
-      if doRemove then
-        if not emptyChars[a] then
-          removed = removed + 1
-        end
-      else
-        out_text = out_text..a
+  while ia < lenA do
+    ia = ia + 1
+    local a = textA:sub(ia, ia)
+    if doRemove then
+      if not emptyChars[a] then
+        removed = removed + 1
       end
+    else
+      out_text = out_text..a
     end
   end
   return {
@@ -196,6 +253,9 @@ function writing.toolTextUpdate(writing_tool, old_text, new_text)
   if updated_text.changed>0 then
     writing_tool:add_wear(def._writing_tool.cost_per_change*updated_text.changed)
   end
+  if (writing_tool:get_count()==0) and def._writing_tool.break_stack then
+    writing_tool:replace(def._writing_tool.break_stack)
+  end
   return updated_text.out_text
 end
 function writing.toolTextRewrite(writing_tool, text)
@@ -218,6 +278,9 @@ function writing.toolTextRewrite(writing_tool, text)
     end
     if new_text.removed>0 then
       writing_tool:add_wear(def._writing_tool.cost_per_remove*rewrite)
+    end
+    if (writing_tool:get_count()==0) and def._writing_tool.break_stack then
+      writing_tool:replace(def._writing_tool.break_stack)
     end
     return true
   else
