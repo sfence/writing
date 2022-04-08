@@ -7,7 +7,12 @@ if writing.textures.feather then
       description = S("Feather with oak Gall Ink"),
       inventory_image = "writing_ink_bottle.png^"..writing.textures.feather,
       
-      _cost_per_character = 10,
+      _writing_tool = {
+        cost_per_add = 10,
+        cost_per_remove = 0,
+        cost_per_change = 20,
+        materials = {paper = 1, wood = 1},
+      },
       
       on_use = writing.on_use_write_tool,
     })
@@ -16,7 +21,12 @@ if writing.textures.feather then
       description = S("Feather with Soot Ink"),
       inventory_image = "writing_ink_bottle.png^"..writing.textures.feather,
       
-      _cost_per_character = 30,
+      _writing_tool = {
+        cost_per_add = 30,
+        cost_per_remove = 0,
+        cost_per_change = 60,
+        materials = {paper = 1, wood = 1},
+      },
       
       on_use = writing.on_use_write_tool,
     })

@@ -11,6 +11,8 @@ if minetest.get_modpath("hades_core") then
   writing.next_inv_row = 10
 end
 
+dofile(modpath.."/settings.lua")
+
 dofile(modpath.."/functions.lua")
 dofile(modpath.."/adaptation.lua")
 

@@ -1,0 +1,2 @@
+# Replacement for changed char
+writing_changed_char (Chanmged char replacement) string

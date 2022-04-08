@@ -11,8 +11,10 @@ minetest.register_tool("writing:pencil_lead", {
     inventory_image = "writing_pencil_lead.png",
     
     _writing_tool = {
-      _cost_per_add = 10,
-      _cost_per_remove = 0,
+      cost_per_add = 10,
+      cost_per_remove = 0,
+      cost_per_change = 20,
+      materials = {paper = 1, wood = 1},
     },
     
     on_use = writing.on_use_write_tool,
@@ -23,8 +25,10 @@ minetest.register_tool("writing:rubber", {
     inventory_image = "writing_rubber.png",
     
     _writing_tool = {
-      _cost_per_add = 0,
-      _cost_per_remove = 10,
+      cost_per_add = 0,
+      cost_per_remove = 10,
+      cost_per_change = 0,
+      materials = {paper = 1, wood = 1},
     },
     
     on_use = writing.on_use_write_tool,

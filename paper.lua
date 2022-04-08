@@ -65,6 +65,7 @@ minetest.register_tool("writing:paper_written", {
     on_use = paper_on_use,
     
     _writable = {
+      materials = {paper=1},
       background = "writing_paper_formspec.png",
       get_writing_formspec = paper_get_writing_formspec,
       writing_receive_fields = paper_writing_receive_fields,

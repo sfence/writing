@@ -109,10 +109,10 @@ local book_writing_receive_fields = function(itemstack, under, field)
     --minetest.log("warning","Smart update: "..dump(new_text))
     meta:set_string(lpage_text, new_text.out_text)
     if new_text.added>0 then
-      itemstack:add_wear(def._writing_tool._cost_per_add*new_text.added)
+      itemstack:add_wear(def._writing_tool.cost_per_add*new_text.added)
     end
     if new_text.removed>0 then
-      itemstack:add_wear(def._writing_tool._cost_per_remove*new_text.removed)
+      itemstack:add_wear(def._writing_tool.cost_per_remove*new_text.removed)
     end
     
     local under_def = under:get_definition()
@@ -123,10 +123,10 @@ local book_writing_receive_fields = function(itemstack, under, field)
       local old_text = meta:get_string(rpage_text)
       local doAdd = false
       local doRemove = false
-      if def._writing_tool._cost_per_add>0 then
+      if def._writing_tool.cost_per_add>0 then
         doAdd = true
       end
-      if def._writing_tool._cost_per_remove>0 then
+      if def._writing_tool.cost_per_remove>0 then
         doRemove = true
         --minetest.log("warning","Enable remove: "..dump(def._writing_tool))
       end
@@ -157,6 +157,7 @@ minetest.register_tool("writing:book_written", {
     on_use = book_on_use,
     
     _writable = {
+      materials = {paper=1}, 
       background = "writing_book_formspec.png",
       get_writing_formspec = book_get_writing_formspec,
       writing_receive_fields = book_writing_receive_fields,
