@@ -36,7 +36,7 @@ for _,feather in pairs(items.feathers) do
       output = "writing:feather_with_soot_glue",
       recipe = {
         {feather,},
-        {"writing:soot_ink_bottle"},
+        {"writing:soot_glue_glass"},
       },
     })
 end
@@ -49,3 +49,41 @@ for _,oil in pairs(items.oils) do
       cooktime = 60,
     })
 end
+
+minetest.register_craft({
+    output = "writing:paper_written",
+    recipe = {
+      {items.paper},
+    },
+  })
+
+minetest.register_craft({
+    output = "writing:papertag_written 4",
+    recipe = {
+      {"writing:paper_written"},
+    },
+  })
+
+minetest.register_craft({
+    output = "writing:pencil_lead",
+    recipe = {
+      {items.lead},
+      {"group:stick"},
+    },
+  })
+
+minetest.register_craft({
+    output = "writing:pencil_silver",
+    recipe = {
+      {items.silver},
+      {"group:stick"},
+    },
+  })
+
+minetest.register_craft({
+    output = "writing:pencil_graphite",
+    recipe = {
+      {items.clay, items.graphite, items.clay},
+      {"", "group:stick", ""},
+    },
+  })

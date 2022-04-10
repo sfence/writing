@@ -32,5 +32,20 @@ if writing.textures.feather then
       
       on_use = writing.on_use_write_tool,
     })
+  
+  minetest.register_tool("writing:feather_with_soot_glue", {
+      description = S("Feather with Soot Glue"),
+      inventory_image = "writing_glue_glass.png^"..writing.textures.feather,
+      
+      _writing_tool = {
+        cost_per_add = 100,
+        cost_per_remove = 0,
+        cost_per_change = 200,
+        materials = {wood = 1, metal = 1, glass = 1},
+        break_stack = writing.items.drinking_glass,
+      },
+      
+      on_use = writing.on_use_write_tool,
+    })
 end
 

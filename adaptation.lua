@@ -8,6 +8,12 @@ local textures = writing.textures
 items.feathers = {}
 items.oils = {}
 
+items.paper = "default:paper"
+items.lead = "technic:lead_ingot"
+items.silver = "moreores:silver_ingot"
+items.clay = "default:clay_lump"
+items.graphite = "technic:graphite"
+
 items.glass_bottle = "vessels:glass_bottle"
 items.drinking_glass = "vessels:drinking_glass"
 items.water_bottle = "bucket:bucket_water"
@@ -40,6 +46,10 @@ if minetest.registered_items["farming:glass_water"] then
   table.insert(items.oils, "farming:sunflower_oil")
 end
 
+if minetest.get_modpath("hades_core") then
+  items.paper = "hades_core:paper"
+end
+
 if minetest.get_modpath("hades_food") then
   table.insert(items.oils, "hades_food:bottle_olive_oil")
 end
@@ -57,3 +67,10 @@ if minetest.registered_items["hades_extrafarming:glass_water"] then
   table.insert(items.oils, "hades_extrafarming:sunflower_oil")
 end
 
+if minetest.get_modpath("hades_technic") then
+  items.lead = "hades_technic:lead_ingot"
+end
+
+if minetest.get_modpath("hades_extraores") then
+  items.silver = "hades_extraores:silver_ingot"
+end

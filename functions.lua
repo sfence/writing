@@ -59,6 +59,8 @@ function writing.trimText(text, max_lines, max_line_chars)
         out_text = out_text..ch
       end
       line_chars = line_chars + 1
+      -- 0xxxxxxx
+      -- 10xxxxxx -> end of UTF8 character
     end
   end
   

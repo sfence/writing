@@ -9,8 +9,9 @@ local book_on_use = function(itemstack, user, pointed_thing)
   local meta = itemstack:get_meta()
   local lpage_text = "page_"..meta:get_int("page")
   local rpage_text = "page_"..(meta:get_int("page")+1)
+  local def = itemstack:get_definition()
   local written_paper = "formspec_version[3]" .. "size[16,12.75]"
-    .. "background[-0.5,-0.5;17,13;writing_book_formspec.png]"
+    .. "background[-0.5,-0.5;17,13;"..(def._writable.background).."]"
     --.. "style["..paper_text..";font=mono;textcolor=#000000;border=false]"
     --.. "textarea[0.5,0.5;7,11;"..paper_text..";;"..minetest.formspec_escape(meta:get_string(paper_text)).."]"
     .. "style_type[textarea;font=mono;textcolor=#000000;border=false]"
@@ -19,7 +20,6 @@ local book_on_use = function(itemstack, user, pointed_thing)
     .. "button[3.5,11.75;1,0.8;prev;<<]"
     .. "button[11.5,11.75;1,0.8;next;>>]"
   minetest.show_formspec(user:get_player_name(), "writing:written_book", written_paper)
-  local def = itemstack:get_definition()
   itemstack:add_wear(def._writable.wear_per_read)
   return itemstack
 end
@@ -59,8 +59,9 @@ local book_get_writing_formspec = function(itemstack)
   local meta = itemstack:get_meta()
   local lpage_text = "page_"..meta:get_int("page")
   local rpage_text = "page_"..(meta:get_int("page")+1)
+  local def = itemstack:get_definition()
   return "formspec_version[3]" .. "size[16,12.5]"
-    .. "background[-0.5,-0.5;17,13.5;writing_book_formspec.png]"
+    .. "background[-0.5,-0.5;17,13.5;"..(def._writable.background).."]"
     --.. "style["..paper_text..";font=mono;textcolor=#000000;border=false]"
     .. "style_type[textarea;font=mono;textcolor=#000000;border=false]"
     .. "textarea[0.5,0.5;7,11;"..lpage_text..";;"..minetest.formspec_escape(meta:get_string(lpage_text)).."]"

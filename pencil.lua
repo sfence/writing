@@ -6,14 +6,42 @@ local S = writing.translator
 
 -- kaucukova guma -> rubber tree
 
+minetest.register_tool("writing:pencil_graphite", {
+    description = S("Graphite Pencil"),
+    inventory_image = "writing_pencil_graphite.png",
+    
+    _writing_tool = {
+      cost_per_add = 100,
+      cost_per_remove = 0,
+      cost_per_change = 200,
+      materials = {paper = 1, wood = 1},
+    },
+    
+    on_use = writing.on_use_write_tool,
+  })
+
 minetest.register_tool("writing:pencil_lead", {
     description = S("Lead Pencil"),
     inventory_image = "writing_pencil_lead.png",
     
     _writing_tool = {
-      cost_per_add = 10,
+      cost_per_add = 30,
       cost_per_remove = 0,
-      cost_per_change = 20,
+      cost_per_change = 60,
+      materials = {paper = 1, wood = 1},
+    },
+    
+    on_use = writing.on_use_write_tool,
+  })
+
+minetest.register_tool("writing:pencil_silver", {
+    description = S("Lead Pencil"),
+    inventory_image = "writing_pencil_silver.png",
+    
+    _writing_tool = {
+      cost_per_add = 15,
+      cost_per_remove = 0,
+      cost_per_change = 30,
       materials = {paper = 1, wood = 1},
     },
     
@@ -26,7 +54,21 @@ minetest.register_tool("writing:rubber", {
     
     _writing_tool = {
       cost_per_add = 0,
-      cost_per_remove = 10,
+      cost_per_remove = 50,
+      cost_per_change = 0,
+      materials = {paper = 1, wood = 1},
+    },
+    
+    on_use = writing.on_use_write_tool,
+  })
+
+minetest.register_tool("writing:pencil_with_rubber", {
+    description = S("Graphite Pencil with Rubber"),
+    inventory_image = "writing_pencil_with_rubber.png",
+    
+    _writing_tool = {
+      cost_per_add = 110,
+      cost_per_remove = 250,
       cost_per_change = 0,
       materials = {paper = 1, wood = 1},
     },
