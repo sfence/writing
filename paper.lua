@@ -56,8 +56,8 @@ minetest.register_tool("writing:paper_written", {
       writing_receive_fields = paper_writing_receive_fields,
       wear_per_read = 100,
       wear_per_write = 200,
-      max_lines = 36,
-      max_line_chars = 39,
+      max_lines = writing.settings.paper_lines,
+      max_line_chars = writing.settings.paper_line_chars,
     },
   })
 
@@ -73,7 +73,7 @@ minetest.register_tool("writing:papertag_written", {
       writing_receive_fields = paper_writing_receive_fields,
       wear_per_read = 50,
       wear_per_write = 100,
-      max_lines = 6,
-      max_line_chars = 30,
+      max_lines = math.max(1, math.floor(writing.settings.paper_lines/6)),
+      max_line_chars = math.floor(writing.settings.paper_line_chars*0.67),
     },
   })

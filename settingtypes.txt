@@ -1,2 +1,12 @@
 # Replacement for changed char
 writing_changed_char (Chanmged char replacement) string
+
+# Number of lines per paper list
+# Should be set when world is created or mod is enabled
+# Changing this setting for existing worlds using writing mod can cause unexpected behavioral
+writing_paper_lines (Lines per paper list) int 36 1 100
+
+# Number of chars per line on paper list
+# Should be set when world is created or mod is enabled
+# Changing this setting for existing worlds using writing mod can cause unexpected behavioral
+writing_paper_line_chars (Chars per line for paper list) int 39 10 100

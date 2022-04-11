@@ -4,11 +4,14 @@ local items = writing.items
 minetest.register_craft({
     output = "writing:soot_ink_bottle",
     recipe = {
-      {items.honey, items.egg, "writing:soot"},
+      {items.honey, items.egg, "writing:soot_glass"},
       {"", items.water_bottle, ""},
       {"", items.glass_bottle, ""},
     },
-    replacements = {{items.water_bottle, items.empty_bottle}},
+    replacements = {
+      {"writing:soot_glass", items.drinking_glass},
+      {items.water_bottle, items.empty_bottle},
+    },
   })
 
 for _,feather in pairs(items.feathers) do
@@ -24,9 +27,9 @@ end
 minetest.register_craft({
     output = "writing:soot_glue_glass",
     recipe = {
-      {items.glue, "writing:soot", items.glue},
-      {"", items.water_bottle, ""},
-      {"", items.drinking_glass, ""},
+      {items.glue},
+      {items.water_bottle},
+      {"writing:soot_glass"},
     },
     replacements = {{items.water_bottle, items.empty_bottle}},
   })
@@ -41,6 +44,8 @@ for _,feather in pairs(items.feathers) do
     })
 end
 
+--[[
+-- requires specialized machine
 for _,oil in pairs(items.oils) do
   minetest.register_craft({
       type = "cooking",
@@ -49,6 +54,31 @@ for _,oil in pairs(items.oils) do
       cooktime = 60,
     })
 end
+--]]
+minetest.register_craft({
+    type = "cooking",
+    output = "writing:steel_strip_ocouzeny",
+    recipe = "basic_materials;steel_strip",
+    cooktime = 6000,
+  })
+minetest.register_craft({
+    output = "writing:soot_glass",
+    recipe = {
+      {"writing:steel_strip_ocouzeny", "writing:steel_strip_ocouzeny", "writing:steel_strip_ocouzeny"},
+      {"writing:steel_strip_ocouzeny", "writing:steel_strip_ocouzeny", "writing:steel_strip_ocouzeny"},
+      {"writing:steel_strip_ocouzeny", items.drinking_glass, "writing:steel_strip_ocouzeny"},
+    },
+    replacements = {
+      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
+      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
+      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
+      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
+      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
+      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
+      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
+      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
+    },
+  })
 
 minetest.register_craft({
     output = "writing:paper_written",

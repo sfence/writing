@@ -1,6 +1,7 @@
 
 local S = writing.translator
 
+-- signs integration
 if minetest.get_modpath("signs_lib") then
   if not minetest.get_modpath("hades_core") then
     -- common signs lib
@@ -276,4 +277,114 @@ elseif minetest.get_modpath("default") then
   
   update_sign("default:sign_wall_wood", {materials={wood=1}})
   update_sign("default:sign_wall_steel", {materials={steel=1}})
+end
+
+-- default book integration
+if minetest.get_modpath("default") then
+  local esc = minetest.formspec_escape
+  local formspec_size = "size[8,8]"
+
+  local function formspec_read(owner, title, string, text, page, page_max)
+    return "label[0.5,0.5;" .. esc(S("by @1", owner)) .. "]" ..
+      "tablecolumns[color;text]" ..
+      "tableoptions[background=#00000000;highlight=#00000000;border=false]" ..
+      "table[0.4,0;7,0.5;title;#FFFF00," .. esc(title) .. "]" ..
+      "textarea[0.5,1.5;7.5,7;;" ..
+        esc(string ~= "" and string or text) .. ";]" ..
+      "button[2.4,7.6;0.8,0.8;book_prev;<]" ..
+      "label[3.2,7.7;" .. esc(S("Page @1 of @2", page, page_max)) .. "]" ..
+      "button[4.9,7.6;0.8,0.8;book_next;>]"
+  end
+
+  local function formspec_string(lpp, page, lines, string)
+    for i = ((lpp * page) - lpp) + 1, lpp * page do
+      if not lines[i] then break end
+      string = string .. lines[i] .. "\n"
+    end
+    return string
+  end
+
+  local tab_number
+  local lpp = 14 -- Lines per book's page
+  local function book_on_use(itemstack, user)
+    local player_name = user:get_player_name()
+    local meta = itemstack:get_meta()
+    local title, text, owner = "", "", player_name
+    local page, page_max, lines, string = 1, 1, {}, ""
+
+    -- Backwards compatibility
+    local old_data = minetest.deserialize(itemstack:get_metadata())
+    if old_data then
+      meta:from_table({ fields = old_data })
+    end
+
+    local data = meta:to_table().fields
+
+    if data.owner then
+      title = data.title or ""
+      text = data.text or ""
+      owner = data.owner
+
+      for str in (text .. "\n"):gmatch("([^\n]*)[\n]") do
+        lines[#lines+1] = str
+      end
+
+      if data.page then
+        page = data.page
+        page_max = data.page_max
+        string = formspec_string(lpp, page, lines, string)
+      end
+    end
+
+    local formspec = formspec_read(owner, title, string, text, page, page_max)
+
+    minetest.show_formspec(player_name, "writing:default_book", formspec_size .. formspec)
+    return itemstack
+  end
+  
+  minetest.register_on_player_receive_fields(function(player, formname, fields)
+      if formname ~= "writing:default_book" then return end
+      local player_name = player:get_player_name()
+      local inv = player:get_inventory()
+      local stack = player:get_wielded_item()
+      local data = stack:get_meta():to_table().fields
+
+      local title = data.title or ""
+      local text = data.text or ""
+
+      if fields.book_next or fields.book_prev then
+        if not data.page then
+          return
+        end
+
+        data.page = tonumber(data.page)
+        data.page_max = tonumber(data.page_max)
+
+        if fields.book_next then
+          data.page = data.page + 1
+          if data.page > data.page_max then
+            data.page = 1
+          end
+        else
+          data.page = data.page - 1
+          if data.page == 0 then
+            data.page = data.page_max
+          end
+        end
+
+        stack:get_meta():from_table({fields = data})
+        stack = book_on_use(stack, player)
+      end
+      
+      -- Update stack
+      player:set_wielded_item(stack)
+    end)
+  
+  minetest.override_item("default:book", {
+      on_use = nil,
+    })
+  
+  minetest.override_item("default:book_written", {
+      on_use = book_on_use,
+    })
 end

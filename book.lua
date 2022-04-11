@@ -129,7 +129,7 @@ minetest.register_tool("writing:book_written", {
       writing_receive_fields = book_writing_receive_fields,
       wear_per_read = 2,
       wear_per_write = 50,
-      max_lines = 36,
-      max_line_chars = 39,
+      max_lines = writing.settings.paper_lines,
+      max_line_chars = writing.settings.paper_line_chars,
     }
   })

@@ -22,4 +22,4 @@ Copyright (c) 2022 Sinki (CC BY-SA 4.0):
   writing_pencil_graphite.png
   writing_pencil_lead.png
   writing_pencil_with_rubber.png
-  writing_rubber.pn
+  writing_rubber.png
