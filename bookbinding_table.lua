@@ -247,7 +247,7 @@ local function booknametag_on_done(self, timer_step, outputs)
   out_meta:set_int("lists", lists)
   out_meta:set_string("color", book_meta:get_string("color"))
   
-  for page=0,page<(2*lists),page=page+1 do
+  for page=0,(2*lists),1 do
     local meta_name = "page_"..page
     out_meta:set_string(meta_name, book_meta:get_string(meta_name))
   end
