@@ -7,25 +7,31 @@ writing.next_line_offset = 8
  
 local paper_on_use = function(itemstack, user, pointed_thing)
   local meta = itemstack:get_meta()
-  local def = itemstack.get_definition()
-  local written_paper = "formspec_version[3]" .. "size[8,12]"
-    .. "background[-0.5,-0.5;9,13;"..(def._writable.background).."]"
+  local def = itemstack:get_definition()
+  local ta_w = 0.5+def._writable.max_line_chars*(7/39)
+  local ta_h = 0.5+def._writable.max_lines*(11/36)
+  local written_paper = "formspec_version[3]" .. "size["..(1+ta_w)..","..(1+ta_h).."]"
+    .. "background[-0.5,-0.5;"..(2+ta_w)..","..(2+ta_h)..";"..(def._writable.background).."]"
     --.. "style[paper_text;font=mono;textcolor=#000000;border=false]"
     --.. "textarea[0.5,0.5;7,11;paper_text;;"..minetest.formspec_escape(meta:get_string("paper_text")).."]"
-    .. "style_type[textarea;font=mono;textcolor=#000000;border=false]"
-    .. "textarea[0.5,0.5;7,11;;;"..minetest.formspec_escape(meta:get_string("paper_text")).."]"
+    .. "style_type[textarea;font=mono;textcolor=#000000;border=false;font_size=32]"
+    .. "textarea[0.5,0.5;"..ta_w..","..ta_h..";;;"..minetest.formspec_escape(meta:get_string("paper_text")).."]"
   minetest.show_formspec(user:get_player_name(), "writing:written_paper", written_paper)
   itemstack:add_wear(def._writable.wear_per_read)
   return itemstack
 end
 local paper_get_writing_formspec = function(itemstack, user)
   local meta = itemstack:get_meta()
-  local def = itemstack.get_definition()
-  return "formspec_version[3]" .. "size[8,12.5]"
-    .. "background[-0.5,-0.5;9,13.5;"..(def._writable.background).."]"
+  local def = itemstack:get_definition()
+  local ta_w = 0.5+def._writable.max_line_chars*(7/39)
+  local ta_h = 0.5+def._writable.max_lines*(11/36)
+  return "formspec_version[3]" .. "size["..(1+ta_w)..","..(1.5+ta_h).."]"
+    .. "background[-0.5,-0.5;"..(2+ta_w)..","..(2.5+ta_h)..";"..(def._writable.background).."]"
+    .. "style_type[label;font=mono;textcolor=#000000;border=false]"
+    .. "label[0.5,0.25;Max lines: "..def._writable.max_lines..", max line chars: "..def._writable.max_line_chars.."]"
     .. "style[paper_text;font=mono;textcolor=#000000;border=false]"
-    .. "textarea[0.5,0.5;7,11;paper_text;;"..minetest.formspec_escape(meta:get_string("paper_text")).."]"
-    .. "button[3.5,11.75;1,0.8;write;Write]"
+    .. "textarea[0.5,0.5;"..ta_w..","..ta_h..";paper_text;;"..minetest.formspec_escape(meta:get_string("paper_text")).."]"
+    .. "button["..((1+ta_w)/2-0.5)..","..(0.75+ta_h)..";1,0.8;write;Write]"
 end
 local paper_writing_receive_fields = function(itemstack, under, field)
   if field.write and writing.toolIsUsable(itemstack, under) then

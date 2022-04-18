@@ -57,26 +57,26 @@ end
 --]]
 minetest.register_craft({
     type = "cooking",
-    output = "writing:steel_strip_ocouzeny",
-    recipe = "basic_materials;steel_strip",
+    output = "writing:singed_steel_strip",
+    recipe = "basic_materials:steel_strip",
     cooktime = 6000,
   })
 minetest.register_craft({
     output = "writing:soot_glass",
     recipe = {
-      {"writing:steel_strip_ocouzeny", "writing:steel_strip_ocouzeny", "writing:steel_strip_ocouzeny"},
-      {"writing:steel_strip_ocouzeny", "writing:steel_strip_ocouzeny", "writing:steel_strip_ocouzeny"},
-      {"writing:steel_strip_ocouzeny", items.drinking_glass, "writing:steel_strip_ocouzeny"},
+      {"writing:singed_steel_strip", "writing:singed_steel_strip", "writing:singed_steel_strip"},
+      {"writing:singed_steel_strip", "writing:singed_steel_strip", "writing:singed_steel_strip"},
+      {"writing:singed_steel_strip", items.drinking_glass, "writing:singed_steel_strip"},
     },
     replacements = {
-      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
-      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
-      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
-      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
-      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
-      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
-      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
-      {"writing:steel_strip_ocouzeny", "basic_materials:steel_strip"},
+      {"writing:singed_steel_strip", "basic_materials:steel_strip"},
+      {"writing:singed_steel_strip", "basic_materials:steel_strip"},
+      {"writing:singed_steel_strip", "basic_materials:steel_strip"},
+      {"writing:singed_steel_strip", "basic_materials:steel_strip"},
+      {"writing:singed_steel_strip", "basic_materials:steel_strip"},
+      {"writing:singed_steel_strip", "basic_materials:steel_strip"},
+      {"writing:singed_steel_strip", "basic_materials:steel_strip"},
+      {"writing:singed_steel_strip", "basic_materials:steel_strip"},
     },
   })
 
@@ -84,13 +84,6 @@ minetest.register_craft({
     output = "writing:paper_written",
     recipe = {
       {items.paper},
-    },
-  })
-
-minetest.register_craft({
-    output = "writing:papertag_written 4",
-    recipe = {
-      {"writing:paper_written"},
     },
   })
 
@@ -117,3 +110,53 @@ minetest.register_craft({
       {"", "group:stick", ""},
     },
   })
+
+minetest.register_craft({
+    output = "writing:pencil_with_rubber",
+    recipe = {
+      {items.clay, items.graphite, items.clay},
+      {"", "group:stick", ""},
+      {"", items.rubber, ""},
+    },
+  })
+
+minetest.register_craft({
+    output = "writing:rubber",
+    recipe = {
+      {items.rubber},
+      {items.rubber},
+    },
+  })
+
+minetest.register_craft({
+    output = "writing:scissors",
+    recipe = {
+      {"", items.steel, ""},
+      {items.plastic_strip, "", items.steel},
+      {"", items.plastic_strip, ""},
+    },
+  })
+
+minetest.register_craft({
+    output = "writing:bookbinding_table",
+    recipe = {
+      {items.wood, items.wood, items.wood},
+      {items.stick, items.needle, items.stick},
+      {items.stick, "writing:scissors", items.stick},
+    },
+  })
+
+-- colored desks
+if minetest.get_modpath("painting") then
+  for color, hex in pairs(painting.hexcolors) do
+    minetest.register_craft({
+        output = minetest.itemstring_with_color("writing:book_desk", "#"..hex),
+        recipe = {
+          {"painting:water_color_"..color},
+          {"writing:book_desk"},
+        },
+        replacements = {{"painting:water_color_"..color, items.drinking_glass}},
+      })
+  end
+end
+

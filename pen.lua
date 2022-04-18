@@ -8,9 +8,9 @@ if writing.textures.feather then
       inventory_image = "writing_ink_bottle.png^"..writing.textures.feather,
       
       _writing_tool = {
-        cost_per_add = 10,
+        cost_per_add = 1,
         cost_per_remove = 0,
-        cost_per_change = 20,
+        cost_per_change = 2,
         materials = {paper = 1, wood = 1},
         break_stack = writing.items.glass_bottle,
       },
@@ -23,9 +23,9 @@ if writing.textures.feather then
       inventory_image = "writing_ink_bottle.png^"..writing.textures.feather,
       
       _writing_tool = {
-        cost_per_add = 30,
+        cost_per_add = 3,
         cost_per_remove = 0,
-        cost_per_change = 60,
+        cost_per_change = 6,
         materials = {paper = 1, wood = 1},
         break_stack = writing.items.glass_bottle,
       },
@@ -38,9 +38,9 @@ if writing.textures.feather then
       inventory_image = "writing_glue_glass.png^"..writing.textures.feather,
       
       _writing_tool = {
-        cost_per_add = 100,
+        cost_per_add = 1,
         cost_per_remove = 0,
-        cost_per_change = 200,
+        cost_per_change = 2,
         materials = {wood = 1, metal = 1, glass = 1},
         break_stack = writing.items.drinking_glass,
       },

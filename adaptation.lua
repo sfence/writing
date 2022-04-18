@@ -13,6 +13,13 @@ items.lead = "technic:lead_ingot"
 items.silver = "moreores:silver_ingot"
 items.clay = "default:clay_lump"
 items.graphite = "technic:graphite"
+items.rubber = "technic:rubber"
+
+items.stick = "group:stick"
+items.wood = "group:wood"
+items.needle = "default:steel_ingot"
+items.steel = "default:steel_ingot"
+items.plastic_strip = "basic_materials:plastic_strip"
 
 items.glass_bottle = "vessels:glass_bottle"
 items.drinking_glass = "vessels:drinking_glass"
@@ -48,6 +55,9 @@ end
 
 if minetest.get_modpath("hades_core") then
   items.paper = "hades_core:paper"
+  items.clay = "hades_core:clay_lump"
+  items.needle = "hades_core:steel_ingot"
+  items.steel = "hades_core:steel_ingot"
 end
 
 if minetest.get_modpath("hades_food") then
@@ -67,10 +77,29 @@ if minetest.registered_items["hades_extrafarming:glass_water"] then
   table.insert(items.oils, "hades_extrafarming:sunflower_oil")
 end
 
+if minetest.get_modpath("technic") then
+  items.steel = "technic:carbon_steel_ingot"
+end
+
 if minetest.get_modpath("hades_technic") then
   items.lead = "hades_technic:lead_ingot"
+  items.graphite = "hades_technic:graphite"
+  items.rubber = "hades_technic:rubber"
+  items.steel = "hades_technic:carbon_steel_ingot"
 end
 
 if minetest.get_modpath("hades_extraores") then
   items.silver = "hades_extraores:silver_ingot"
 end
+
+if minetest.get_modpath("clothing") then
+  items.yarn = "clothing:yarn_spool_white"
+  items.yarn_spool_empty = "clothing:yarn_spool_empty"
+  items.needle = "clothing:bone_needle"
+end
+if minetest.get_modpath("hades_clothing") then
+  items.yarn = "hades_clothing:yarn_spool_white"
+  items.yarn_spool_empty = "hades_clothing:yarn_spool_empty"
+  items.needle = "hades_clothing:bone_needle"
+end
+

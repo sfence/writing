@@ -11,9 +11,9 @@ minetest.register_tool("writing:pencil_graphite", {
     inventory_image = "writing_pencil_graphite.png",
     
     _writing_tool = {
-      cost_per_add = 100,
+      cost_per_add = 10,
       cost_per_remove = 0,
-      cost_per_change = 200,
+      cost_per_change = 20,
       materials = {paper = 1, wood = 1},
     },
     
@@ -25,9 +25,9 @@ minetest.register_tool("writing:pencil_lead", {
     inventory_image = "writing_pencil_lead.png",
     
     _writing_tool = {
-      cost_per_add = 30,
+      cost_per_add = 3,
       cost_per_remove = 0,
-      cost_per_change = 60,
+      cost_per_change = 6,
       materials = {paper = 1, wood = 1},
     },
     
@@ -35,13 +35,13 @@ minetest.register_tool("writing:pencil_lead", {
   })
 
 minetest.register_tool("writing:pencil_silver", {
-    description = S("Lead Pencil"),
+    description = S("Silver Pencil"),
     inventory_image = "writing_pencil_silver.png",
     
     _writing_tool = {
-      cost_per_add = 15,
+      cost_per_add = 1.5,
       cost_per_remove = 0,
-      cost_per_change = 30,
+      cost_per_change = 3,
       materials = {paper = 1, wood = 1},
     },
     
@@ -54,7 +54,7 @@ minetest.register_tool("writing:rubber", {
     
     _writing_tool = {
       cost_per_add = 0,
-      cost_per_remove = 50,
+      cost_per_remove = 5,
       cost_per_change = 0,
       materials = {paper = 1, wood = 1},
     },
@@ -67,11 +67,12 @@ minetest.register_tool("writing:pencil_with_rubber", {
     inventory_image = "writing_pencil_with_rubber.png",
     
     _writing_tool = {
-      cost_per_add = 110,
-      cost_per_remove = 250,
+      cost_per_add = 11,
+      cost_per_remove = 25,
       cost_per_change = 0,
       materials = {paper = 1, wood = 1},
     },
     
     on_use = writing.on_use_write_tool,
   })
+

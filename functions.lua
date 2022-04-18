@@ -158,6 +158,10 @@ function writing.smartTextUpdate(textA, textB, doAdd, doRemove, doChange)
           --out_text = out_text .. utf8.char(0x2573) -- cross
           out_text = out_text..(writing.change_char(a))
           changed = changed + 1
+        elseif doAdd and doRemove then
+          out_text = out_text..b
+          added = added + 1
+          removed = removed + 1
         else
           out_text = out_text..a
         end
@@ -247,13 +251,13 @@ function writing.toolTextUpdate(writing_tool, old_text, new_text)
   --minetest.log("warning","Smart update: "..dump(updated_text))
   --meta:set_string("infotext", updated_text.out_text)
   if updated_text.added>0 then
-    writing_tool:add_wear(def._writing_tool.cost_per_add*updated_text.added)
+    writing_tool:add_wear(math.ceil(def._writing_tool.cost_per_add*updated_text.added))
   end
   if updated_text.removed>0 then
-    writing_tool:add_wear(def._writing_tool.cost_per_remove*updated_text.removed)
+    writing_tool:add_wear(math.ceil(def._writing_tool.cost_per_remove*updated_text.removed))
   end
   if updated_text.changed>0 then
-    writing_tool:add_wear(def._writing_tool.cost_per_change*updated_text.changed)
+    writing_tool:add_wear(math.ceil(def._writing_tool.cost_per_change*updated_text.changed))
   end
   if (writing_tool:get_count()==0) and def._writing_tool.break_stack then
     writing_tool:replace(def._writing_tool.break_stack)
@@ -276,10 +280,10 @@ function writing.toolTextRewrite(writing_tool, text)
   if doAdd and doRemove then
     rewrite = writing.smartCharCount(text)
     if new_text.added>0 then
-      writing_tool:add_wear(def._writing_tool.cost_per_add*rewrite)
+      writing_tool:add_wear(math.ceil(def._writing_tool.cost_per_add*rewrite))
     end
     if new_text.removed>0 then
-      writing_tool:add_wear(def._writing_tool.cost_per_remove*rewrite)
+      writing_tool:add_wear(math.ceil(def._writing_tool.cost_per_remove*rewrite))
     end
     if (writing_tool:get_count()==0) and def._writing_tool.break_stack then
       writing_tool:replace(def._writing_tool.break_stack)

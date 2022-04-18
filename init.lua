@@ -16,6 +16,8 @@ dofile(modpath.."/settings.lua")
 dofile(modpath.."/functions.lua")
 dofile(modpath.."/adaptation.lua")
 
+dofile(modpath.."/oak_gall.lua")
+
 dofile(modpath.."/ink.lua")
 dofile(modpath.."/glue.lua")
 
@@ -24,6 +26,8 @@ dofile(modpath.."/pen.lua")
 
 dofile(modpath.."/paper.lua")
 dofile(modpath.."/book.lua")
+
+dofile(modpath.."/bookbinding_table.lua")
 
 dofile(modpath.."/integration.lua")
 

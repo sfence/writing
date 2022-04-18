@@ -10,8 +10,8 @@ local book_on_use = function(itemstack, user, pointed_thing)
   local lpage_text = "page_"..meta:get_int("page")
   local rpage_text = "page_"..(meta:get_int("page")+1)
   local def = itemstack:get_definition()
-  local written_paper = "formspec_version[3]" .. "size[16,12.75]"
-    .. "background[-0.5,-0.5;17,13;"..(def._writable.background).."]"
+  local written_paper = "formspec_version[3]" .. "size[16,12.5]"
+    .. "background[-0.5,-0.5;17,13.5;"..(def._writable.background).."]"
     --.. "style["..paper_text..";font=mono;textcolor=#000000;border=false]"
     --.. "textarea[0.5,0.5;7,11;"..paper_text..";;"..minetest.formspec_escape(meta:get_string(paper_text)).."]"
     .. "style_type[textarea;font=mono;textcolor=#000000;border=false]"
@@ -62,6 +62,8 @@ local book_get_writing_formspec = function(itemstack)
   local def = itemstack:get_definition()
   return "formspec_version[3]" .. "size[16,12.5]"
     .. "background[-0.5,-0.5;17,13.5;"..(def._writable.background).."]"
+    .. "style_type[label;font=mono;textcolor=#000000;border=false]"
+    .. "label[0.5,0.25;Max lines: "..def._writable.max_lines..", max line chars: "..def._writable.max_line_chars.."]"
     --.. "style["..paper_text..";font=mono;textcolor=#000000;border=false]"
     .. "style_type[textarea;font=mono;textcolor=#000000;border=false]"
     .. "textarea[0.5,0.5;7,11;"..lpage_text..";;"..minetest.formspec_escape(meta:get_string(lpage_text)).."]"
@@ -117,9 +119,28 @@ local book_writing_receive_fields = function(itemstack, under, field)
   end
 end
 
-minetest.register_tool("writing:book_written", {
-    description = S("Book with written text"),
-    inventory_image = "writing_book_written.png",
+minetest.register_tool("writing:book_glued_written", {
+    description = S("Book with Written Text (Glued Binding)"),
+    inventory_image = "writing_book_written_desks.png",
+    inventory_overlay = "writing_book_written_body.png",
+    on_use = book_on_use,
+    
+    _writable = {
+      materials = {paper=1}, 
+      background = "writing_book_formspec.png",
+      get_writing_formspec = book_get_writing_formspec,
+      writing_receive_fields = book_writing_receive_fields,
+      wear_per_read = 20,
+      wear_per_write = 100,
+      max_lines = writing.settings.paper_lines,
+      max_line_chars = writing.settings.paper_line_chars,
+    }
+  })
+
+minetest.register_tool("writing:book_sewn_written", {
+    description = S("Book with Written Text (Sewn Binding)"),
+    inventory_image = "writing_book_written_desks.png",
+    inventory_overlay = "writing_book_written_body.png",
     on_use = book_on_use,
     
     _writable = {
@@ -133,3 +154,4 @@ minetest.register_tool("writing:book_written", {
       max_line_chars = writing.settings.paper_line_chars,
     }
   })
+
