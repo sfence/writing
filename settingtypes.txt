@@ -1,5 +1,5 @@
 # Replacement for changed char
-writing_changed_char (Chanmged char replacement) string
+writing_changed_char (Chanmged char replacement) string █
 
 # Number of lines per paper list
 # Should be set when world is created or mod is enabled

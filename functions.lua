@@ -70,11 +70,6 @@ end
 
 writing.change_char = nil
 
---[[
-writing.change_char = function (ch)
-  return utf8.char(0x338)..ch
-end
---]]
 if writing.settings.change_char~="" then
   writing.change_char = function (ch)
     --return "\u{338}"..ch
