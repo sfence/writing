@@ -129,12 +129,12 @@ local node_def = {
     selection_box = node_box,
     collision_box = node_box,
     tiles = {
-      "writing_bookbinding_table_top.png",
-      "writing_bookbinding_table_bottom.png",
-      "writing_bookbinding_table_side.png",
-      "writing_bookbinding_table_side.png",
-      "writing_bookbinding_table_side.png",
-      "writing_bookbinding_table_front.png"
+      "writing_bookbinding_table_wood.png",
+      "writing_bookbinding_table_page.png",
+      "writing_bookbinding_table_book_1.png",
+      "writing_bookbinding_table_book_2.png",
+      "writing_bookbinding_table_book_3.png",
+      "writing_bookbinding_table_book_4.png"
     },
   }
 
