@@ -11,12 +11,17 @@ if minetest.get_modpath("hades_core") then
   writing.next_inv_row = 10
 end
 
+writing.have_oak = minetest.get_modpath("oak") or minetest.get_modpath("hades_oak")
+
 dofile(modpath.."/settings.lua")
 
 dofile(modpath.."/functions.lua")
 dofile(modpath.."/adaptation.lua")
 
-dofile(modpath.."/oak_gall.lua")
+if writing.have_oak then
+  dofile(modpath.."/oak_gall.lua")
+  dofile(modpath.."/oak_ink_tub.lua")
+end
 
 dofile(modpath.."/ink.lua")
 dofile(modpath.."/glue.lua")

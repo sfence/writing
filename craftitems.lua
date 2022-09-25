@@ -1,7 +1,6 @@
 
 local S = writing.translator
 
-
 minetest.register_craftitem("writing:soot_glass", {
     description = S("Glass of Soot"),
     inventory_image = "writing_soot_glass.png",
@@ -15,6 +14,21 @@ minetest.register_craftitem("writing:scissors", {
 minetest.register_craftitem("writing:singed_steel_strip", {
     description = S("Singed Steel Strip"),
     inventory_image = "writing_singed_steel_strip.png",
+  })
+
+minetest.register_craftitem("writing:dust_oak_ball", {
+    description = S("Oak Ball Dust"),
+    inventory_image = "writing_dust_oak_ball.png",
+  })
+
+minetest.register_craftitem("writing:bucket_water_with_oak_gall_dust", {
+    description = S("Bucket With Water Mixed With Oak Gall Dust"),
+    inventory_image = "writing_bucket_water_with_oak_gall_dust.png",
+  })
+
+minetest.register_tool("writing:etched_steel_strip", {
+    description = S("Etched Steel Strip"),
+    inventory_image = "writing_etched_steel_strip.png",
   })
 
 minetest.register_craftitem("writing:book_desk", {

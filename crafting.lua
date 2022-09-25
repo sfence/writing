@@ -25,6 +25,15 @@ for _,feather in pairs(items.feathers) do
 end
 
 minetest.register_craft({
+    output = "writing:bucket_water_with_oak_gall_dust",
+    recipe = {
+      {"writing:dust_oak_ball", "writing:dust_oak_ball", "writing:dust_oak_ball"},
+      {"writing:dust_oak_ball", "writing:dust_oak_ball", "writing:dust_oak_ball"},
+      {"writing:dust_oak_ball", "group:water_bucket", "writing:dust_oak_ball"},
+    },
+  })
+
+minetest.register_craft({
     output = "writing:soot_glue_glass",
     recipe = {
       {items.glue},
