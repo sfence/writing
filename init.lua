@@ -1,4 +1,6 @@
 
+minetest.log("action", "[MOD] Writing loading...")
+
 writing = {
   translator = minetest.get_translator("writting")
 }
@@ -11,14 +13,12 @@ if minetest.get_modpath("hades_core") then
   writing.next_inv_row = 10
 end
 
-writing.have_oak = minetest.get_modpath("oak") or minetest.get_modpath("hades_oak")
-
 dofile(modpath.."/settings.lua")
 
 dofile(modpath.."/functions.lua")
 dofile(modpath.."/adaptation.lua")
 
-if writing.have_oak then
+if writing.adaptation.oak_leaves then
   dofile(modpath.."/oak_gall.lua")
   dofile(modpath.."/oak_ink_tub.lua")
 end
@@ -38,3 +38,6 @@ dofile(modpath.."/integration.lua")
 
 dofile(modpath.."/craftitems.lua")
 dofile(modpath.."/crafting.lua")
+
+minetest.log("action", "[MOD] Writing loaded.")
+

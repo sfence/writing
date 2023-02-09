@@ -3,18 +3,9 @@ local S = writing.translator
 
 -- leaves with oak gall
 
-local leaves_sounds = nil
-
-if minetest.get_modpath("sounds") then
-elseif minetest.get_modpath("default") then
-  leaves_sounds = default.node_sound_leaves_defaults()
-elseif minetest.get_modpath("hades_sounds") then
-  leaves_sounds = hades_sounds.node_sound_leaves_defaults()
-end
-
 local gall_on_punch = function (pos, node, puncher)
   local def = minetest.registered_nodes[node.name]
-  node.name = "oak:leaves"
+  node.name = def._no_gall_node
   minetest.swap_node(pos, node)
   if def._next_grow_node==node.name then
     -- drop oak gall
@@ -29,68 +20,34 @@ local gall_on_punch = function (pos, node, puncher)
   end
 end
 
-minetest.register_node("writing:oak_leaves_gall_1", {
-    description = S("Oak Leaves with Gall"),
-    drawtype = "allfaces_optional",
-    tiles = {"oak_leaves.png^writing_oak_gall_1.png"},
-    paramtype = "light",
-    walkable = true,
-    waving = 1,
-    groups = {snappy = 3, leafdecay = 3, leaves = 1, flammable = 2, not_in_creative_inventory = 1, oak_gall = 1},
-    _hades_trees_trunk = "oak:trunk",
-    drop = {
-      max_items = 1,
-      items = {
-        {items = {"oak:sapling"}, rarity = 20},
-        {items = {"oak:leaves"}}
-      }
-    },
-    sounds = leaves_sounds,
-    on_punch = gall_on_punch,
-    _next_grow_node = "writing:oak_leaves_gall_2",
-  })
+minetest.register_alias("writing:oak_leaves_gall_1", "oak:leaves_gall_1")
+minetest.register_alias("writing:oak_leaves_gall_2", "oak:leaves_gall_2")
+minetest.register_alias("writing:oak_leaves_gall_3", "oak:leaves_gall_3")
 
-minetest.register_node("writing:oak_leaves_gall_2", {
-    description = S("Oak Leaves with Gall"),
-    drawtype = "allfaces_optional",
-    tiles = {"oak_leaves.png^writing_oak_gall_2.png"},
-    paramtype = "light",
-    walkable = true,
-    waving = 1,
-    groups = {snappy = 3, leafdecay = 3, leaves = 1, flammable = 2, not_in_creative_inventory = 1, oak_gall = 1},
-    _hades_trees_trunk = "oak:trunk",
-    drop = {
-      max_items = 1,
-      items = {
-        {items = {"oak:sapling"}, rarity = 20},
-        {items = {"oak:leaves"}}
-      }
-    },
-    sounds = leaves_sounds,
-    on_punch = gall_on_punch,
-    _next_grow_node = "writing:oak_leaves_gall_3",
-  })
+for _,oak_leaves in pairs(writing.adaptation.oak_leaves) do
+  local odef = minetest.registered_nodes[oak_leaves]
+  local ndef = table.copy(odef)
+  
+  local gall = oak_leaves.."_gall_"
+  
+  ndef.description = S("Oak Leaves with Gall")
+  ndef.tiles[1] = odef.tiles[1].."^writing_oak_gall_1.png"
+  ndef.groups = ndef.groups or {}
+  ndef.groups.not_in_creative_inventory = 1
+  ndef.groups.oak_gall = 1
+  ndef.on_punch = gall_on_punch
+  ndef._next_grow_node = gall.."2"
+  ndef._no_gall_node = oak_leaves..""
+  minetest.register_node(":"..gall.."1", table.copy(ndef))
 
-minetest.register_node("writing:oak_leaves_gall_3", {
-    description = S("Oak Leaves with Gall"),
-    drawtype = "allfaces_optional",
-    tiles = {"oak_leaves.png^writing_oak_gall_3.png"},
-    paramtype = "light",
-    walkable = true,
-    waving = 1,
-    groups = {snappy = 3, leafdecay = 3, leaves = 1, flammable = 2, not_in_creative_inventory = 1, oak_gall = 1},
-    _hades_trees_trunk = "oak:trunk",
-    drop = {
-      max_items = 1,
-      items = {
-        {items = {"oak:sapling"}, rarity = 20},
-        {items = {"oak:leaves"}},
-      }
-    },
-    sounds = leaves_sounds,
-    on_punch = gall_on_punch,
-    _next_grow_node = "oak:leaves",
-  })
+  ndef.tiles[1] = odef.tiles[1].."^writing_oak_gall_2.png"
+  ndef._next_grow_node = gall.."3"
+  minetest.register_node(":"..gall.."2", table.copy(ndef))
+
+  ndef.tiles[1] = odef.tiles[1].."^writing_oak_gall_2.png"
+  ndef._next_grow_node = oak_leaves..""
+  minetest.register_node(":"..gall.."3", table.copy(ndef))
+end
 
 minetest.register_craftitem("writing:oak_gall", {
     description = S("Oak Gall"),
@@ -99,12 +56,12 @@ minetest.register_craftitem("writing:oak_gall", {
 
 minetest.register_abm({
     label = "Create oak gall",
-    nodenames = {"oak:leaves"},
+    nodenames = writing.adaptation.oak_leaves,
     interval = 370,
-    chance = 127,
-    action = function (pos)
+    chance = 233,
+    action = function (pos, node)
       -- check light level?
-      minetest.set_node(pos, {name="writing:oak_leaves_gall_1"})
+      minetest.set_node(pos, {name=node.name.."_gall_1"})
     end,
   })
 minetest.register_abm({

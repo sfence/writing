@@ -26,8 +26,6 @@ items.drinking_glass = "vessels:drinking_glass"
 items.water_bottle = "bucket:bucket_water"
 items.empty_bottle = "bucket:bucket_empty"
 
-items.egg = "--unknown--"
-items.honey = "--unknown--"
 items.glue = "mesecons_materials:glue"
 
 if minetest.get_modpath("animalia") then
@@ -102,4 +100,37 @@ if minetest.get_modpath("hades_clothing") then
   items.yarn_spool_empty = "hades_clothing:yarn_spool_empty"
   items.needle = "hades_clothing:bone_needle"
 end
+
+writing.adaptation = {}
+
+local adaptation = writing.adaptation
+
+-- items
+adaptation.paper = adaptation_lib.get_item("paper")
+adaptation.lead = adaptation_lib.get_item("ingot_lead")
+adaptation.silver = adaptation_lib.get_item("ingot_silver")
+adaptation.clay = adaptation_lib.get_item("lump_clay")
+adaptation.graphite = adaptation_lib.get_item({"graphite","lump_charcoal","lump_coal"})
+adaptation.rubber = adaptation_lib.get_item("rubber")
+
+adaptation.needle = adaptation_lib.get_item({"needle_bone", "ingot_steel","ingot_iron"})
+adaptation.steel = adaptation_lib.get_item({"ingot_carbon_steel","ingot_steel","ingot_iron"})
+adaptation.plastic_strip = adaptation_lib.get_item("strip_plastic")
+
+adaptation.glass_bottle = adaptation_lib.get_item("bottle_glass")
+adaptation.drinking_glass = adaptation_lib.get_item("drinking_glass")
+adaptation.water_bottle = adaptation_lib.get_item({"drinking_glass_water", "bucket_water"})
+
+adaptation.glue = adaptation_lib.get_item("glue")
+
+-- lists
+
+adaptation.feathers = adaptation_lib.get_list("feather") or {}
+adaptation.oils = adaptation_lib.get_list("oil") or {}
+
+adaptation.oak_leaves = adaptation_lib.get_list("oak_leaves")
+
+-- groups
+adaptation.group_stick = adaptation_lib.get_group("stick")
+adaptation.group_wood = adaptation_lib.get_group("wood")
 

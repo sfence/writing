@@ -1,20 +1,28 @@
 
-local items = writing.items
+local adaptation = writing.adaptation
+
+local N = adaptation_lib.get_item_name
+
+if (not adaptation_lib.check_keys_aviable("[writing] Crafting:", adaptation, {"group_stick", "group_wood"})) then
+  return
+end
+
+adaptation_lib.check_keys_aviable("[writing] Crafting:", adaptation, {"water_bottle", "glass_bottle", "drinking_glass", "feathers", "glue", "paper", "graphite"})
+
 
 minetest.register_craft({
     output = "writing:soot_ink_bottle",
     recipe = {
-      {items.honey, items.egg, "writing:soot_glass"},
-      {"", items.water_bottle, ""},
-      {"", items.glass_bottle, ""},
+      {"group:honey", "group:egg", "writing:soot_glass"},
+      {"", N(adaptation.water_bottle), ""},
+      {"", N(adaptation.glass_bottle), ""},
     },
-    replacements = {
-      {"writing:soot_glass", items.drinking_glass},
-      {items.water_bottle, items.empty_bottle},
-    },
+    replacements = adaptation_lib.get_craft_replacements(
+      {{"writing:soot_glass", N(adaptation.drinking_glass)}},
+      {adaptation.water_bottle}),
   })
 
-for _,feather in pairs(items.feathers) do
+for _,feather in pairs(adaptation.feathers) do
   minetest.register_craft({
       output = "writing:feather_with_soot_ink",
       recipe = {
@@ -36,14 +44,15 @@ minetest.register_craft({
 minetest.register_craft({
     output = "writing:soot_glue_glass",
     recipe = {
-      {items.glue},
-      {items.water_bottle},
+      {N(adaptation.glue)},
+      {N(adaptation.water_bottle)},
       {"writing:soot_glass"},
     },
-    replacements = {{items.water_bottle, items.empty_bottle}},
+    replacements = adaptation_lib.get_craft_replacements(
+      nil, {adaptation.water_bottle}),
   })
 
-for _,feather in pairs(items.feathers) do
+for _,feather in pairs(adaptation.feathers) do
   minetest.register_craft({
       output = "writing:feather_with_soot_glue",
       recipe = {
@@ -55,7 +64,7 @@ end
 
 --[[
 -- requires specialized machine
-for _,oil in pairs(items.oils) do
+for _,oil in pairs(adaptation.oils) do
   minetest.register_craft({
       type = "cooking",
       output = "writing:soot",
@@ -75,7 +84,7 @@ minetest.register_craft({
     recipe = {
       {"writing:singed_steel_strip", "writing:singed_steel_strip", "writing:singed_steel_strip"},
       {"writing:singed_steel_strip", "writing:singed_steel_strip", "writing:singed_steel_strip"},
-      {"writing:singed_steel_strip", items.drinking_glass, "writing:singed_steel_strip"},
+      {"writing:singed_steel_strip", N(adaptation.drinking_glass), "writing:singed_steel_strip"},
     },
     replacements = {
       {"writing:singed_steel_strip", "basic_materials:steel_strip"},
@@ -92,66 +101,70 @@ minetest.register_craft({
 minetest.register_craft({
     output = "writing:paper_written",
     recipe = {
-      {items.paper},
+      {N(adaptation.paper)},
     },
   })
 
-minetest.register_craft({
-    output = "writing:pencil_lead",
-    recipe = {
-      {items.lead},
-      {"group:stick"},
-    },
-  })
+if adaptation.lead then
+  minetest.register_craft({
+      output = "writing:pencil_lead",
+      recipe = {
+        {N(adaptation.lead)},
+        {adaptation.group_stick},
+      },
+    })
+end
 
-minetest.register_craft({
-    output = "writing:pencil_silver",
-    recipe = {
-      {items.silver},
-      {"group:stick"},
-    },
-  })
+if adaptation.silver then
+  minetest.register_craft({
+      output = "writing:pencil_silver",
+      recipe = {
+        {N(adaptation.silver)},
+        {adaptation.group_stick},
+      },
+    })
+end
 
 minetest.register_craft({
     output = "writing:pencil_graphite",
     recipe = {
-      {items.clay, items.graphite, items.clay},
-      {"", "group:stick", ""},
+      {N(adaptation.clay), N(adaptation.graphite), N(adaptation.clay)},
+      {"", adaptation.group_stick, ""},
     },
   })
 
 minetest.register_craft({
     output = "writing:pencil_with_rubber",
     recipe = {
-      {items.clay, items.graphite, items.clay},
-      {"", "group:stick", ""},
-      {"", items.rubber, ""},
+      {N(adaptation.clay), N(adaptation.graphite), N(adaptation.clay)},
+      {"", adaptation.group_stick, ""},
+      {"", N(adaptation.rubber), ""},
     },
   })
 
 minetest.register_craft({
     output = "writing:rubber",
     recipe = {
-      {items.rubber},
-      {items.rubber},
+      {N(adaptation.rubber)},
+      {N(adaptation.rubber)},
     },
   })
 
 minetest.register_craft({
     output = "writing:scissors",
     recipe = {
-      {"", items.steel, ""},
-      {items.plastic_strip, "", items.steel},
-      {"", items.plastic_strip, ""},
+      {"", N(adaptation.steel), ""},
+      {N(adaptation.plastic_strip), "", N(adaptation.steel)},
+      {"", N(adaptation.plastic_strip), ""},
     },
   })
 
 minetest.register_craft({
     output = "writing:bookbinding_table",
     recipe = {
-      {items.wood, items.wood, items.wood},
-      {items.stick, items.needle, items.stick},
-      {items.stick, "writing:scissors", items.stick},
+      {adaptation.group_wood, adaptation.group_wood, adaptation.group_wood},
+      {adaptation.group_stick, N(adaptation.needle), adaptation.group_stick},
+      {adaptation.group_stick, "writing:scissors", adaptation.group_stick},
     },
   })
 
@@ -164,7 +177,7 @@ if minetest.get_modpath("painting") then
           {"painting:water_color_"..color},
           {"writing:book_desk"},
         },
-        replacements = {{"painting:water_color_"..color, items.drinking_glass}},
+        replacements = {{"painting:water_color_"..color, N(adaptation.drinking_glass)}},
       })
   end
 end
